@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Catálogo directo de casas prefabricadas DELANOVA con opciones de compra y alquiler."
+    />
+    <meta name="theme-color" content="#14205e" />
+    <title>Casas prefabricadas | DELANOVA</title>
+    <link rel="preload" href="assets/images/esencial-exterior.jpg" as="image" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="promo-bar" aria-label="Oferta temporal">
+      <span class="promo-bar__label">Oferta exclusiva online</span>
+      <strong id="topTimer" class="timer" aria-live="polite">10:00:00</strong>
+      <a href="#catalogo">Ver oferta</a>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <img src="assets/images/logo-delanova.jpeg" alt="DELANOVA" />
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="#catalogo">Modelos</a>
+        <a href="#como-funciona">Cómo comprar</a>
+      </nav>
+      <a class="header-cta js-whatsapp" href="#" data-intent="asesoria">Hablar con asesor</a>
+    </header>
+
+    <main id="inicio">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero__copy">
+          <span class="eyebrow">Entrega rápida · Instalación coordinada</span>
+          <h1 id="heroTitle">Tu casa prefabricada, lista para dar el siguiente paso.</h1>
+          <p>
+            Compara tres modelos, revisa sus acabados y solicita tu cotización directamente por WhatsApp.
+          </p>
+          <div class="hero__trust" aria-label="Beneficios principales">
+            <span>✓ Precios referenciales claros</span>
+            <span>✓ Asesoría personalizada</span>
+            <span>✓ Compra o alquiler</span>
+          </div>
+        </div>
+        <a class="hero__deal" href="#catalogo">
+          <span>DESCUENTO WEB</span>
+          <strong>Hasta 13% menos</strong>
+          <small>Solo durante tu contador activo</small>
+        </a>
+      </section>
+
+      <section id="catalogo" class="catalog" aria-labelledby="catalogTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Elige tu modelo</span>
+            <h2 id="catalogTitle">Casas listas para cotizar</h2>
+          </div>
+          <span class="stock-chip"><i></i> Atención comercial disponible</span>
+        </div>
+
+        <div id="modelSelector" class="model-selector" role="tablist" aria-label="Modelos de casa">
+          <button class="model-tab is-active" role="tab" aria-selected="true" data-model="esencial">
+            <span>Esencial</span>
+            <small>Desde S/ 24,900</small>
+          </button>
+          <button class="model-tab" role="tab" aria-selected="false" data-model="confort">
+            <span>Confort</span>
+            <small>Desde S/ 34,900</small>
+          </button>
+          <button class="model-tab" role="tab" aria-selected="false" data-model="premium">
+            <span>Premium</span>
+            <small>Desde S/ 44,900</small>
+          </button>
+        </div>
+
+        <article class="product-card" aria-live="polite">
+          <div class="gallery" aria-label="Galería del modelo seleccionado">
+            <div class="gallery__stage" id="galleryStage">
+              <span id="discountBadge" class="discount-badge">-11%</span>
+              <span class="reference-badge">Imagen referencial</span>
+              <img id="productImage" src="assets/images/esencial-exterior.jpg" alt="Exterior del modelo Esencial" />
+              <button id="galleryPrev" class="gallery__arrow gallery__arrow--prev" aria-label="Foto anterior">‹</button>
+              <button id="galleryNext" class="gallery__arrow gallery__arrow--next" aria-label="Foto siguiente">›</button>
+            </div>
+            <div class="gallery__footer">
+              <div id="galleryDots" class="gallery__dots" aria-label="Seleccionar fotografía"></div>
+              <span id="galleryCounter">1 / 2</span>
+            </div>
+          </div>
+
+          <div class="product-info">
+            <div class="product-info__topline">
+              <span id="productTag" class="product-tag">La opción más práctica</span>
+              <span class="rating" aria-label="Calificación referencial 4.8 de 5">★ 4.8</span>
+            </div>
+            <h2 id="productName">Casa Esencial 36</h2>
+            <p id="productSummary" class="product-summary">
+              Una vivienda compacta y funcional para comenzar rápido con lo necesario.
+            </p>
+
+            <div class="mode-switch" role="group" aria-label="Modalidad de cotización">
+              <button class="mode-button is-active" data-mode="compra">Comprar</button>
+              <button class="mode-button" data-mode="alquiler">Alquilar</button>
+            </div>
+
+            <div class="price-box">
+              <div>
+                <span id="priceLabel">Precio web referencial</span>
+                <div class="price-line">
+                  <strong id="currentPrice">S/ 24,900</strong>
+                  <del id="regularPrice">S/ 27,900</del>
+                </div>
+                <small id="priceNote">Incluye estructura base; traslado e instalación se cotizan según ubicación.</small>
+              </div>
+              <span id="inlineDiscount" class="inline-discount">Ahorras S/ 3,000</span>
+            </div>
+
+            <div class="offer-clock" id="offerClock">
+              <span>Tu precio promocional termina en</span>
+              <strong id="productTimer" class="timer">10:00:00</strong>
+            </div>
+
+            <div class="quick-specs" id="quickSpecs">
+              <span><strong>36 m²</strong> Área</span>
+              <span><strong>2</strong> Dormitorios</span>
+              <span><strong>1</strong> Baño</span>
+            </div>
+
+            <a id="mainCta" class="primary-cta js-whatsapp" href="#" data-intent="producto">
+              Cotizar esta casa por WhatsApp
+            </a>
+            <button id="detailsToggle" class="secondary-cta" aria-expanded="false" aria-controls="technicalDetails">
+              Ver detalles específicos
+              <span aria-hidden="true">⌄</span>
+            </button>
+
+            <div id="technicalDetails" class="technical-details" hidden>
+              <h3>Especificaciones referenciales</h3>
+              <ul id="detailList"></ul>
+              <p>
+                La distribución, materiales, instalaciones, transporte y montaje deben validarse en la cotización final.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="como-funciona" class="steps" aria-labelledby="stepsTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Compra sin vueltas</span>
+            <h2 id="stepsTitle">¿Cómo solicito mi casa?</h2>
+          </div>
+        </div>
+        <div class="steps__grid">
+          <article><span>1</span><h3>Elige el modelo</h3><p>Compara precio, tamaño, distribución y acabados.</p></article>
+          <article><span>2</span><h3>Escribe al asesor</h3><p>Enviamos automáticamente el modelo y modalidad elegidos.</p></article>
+          <article><span>3</span><h3>Recibe tu cotización</h3><p>Validamos ubicación, transporte, instalación y personalizaciones.</p></article>
+        </div>
+      </section>
+
+      <section class="assurance" aria-label="Condiciones importantes">
+        <div><span>▣</span><strong>Fotos conceptuales</strong><small>Las imágenes son referenciales.</small></div>
+        <div><span>⌂</span><strong>Configuración flexible</strong><small>Consulta cambios con el asesor.</small></div>
+        <div><span>✓</span><strong>Precio transparente</strong><small>Valores sujetos a cotización final.</small></div>
+      </section>
+
+      <section class="faq" aria-labelledby="faqTitle">
+        <span class="eyebrow">Antes de cotizar</span>
+        <h2 id="faqTitle">Preguntas frecuentes</h2>
+        <details>
+          <summary>¿El precio incluye transporte e instalación?</summary>
+          <p>El valor mostrado corresponde a la configuración base. Transporte, instalación y adecuaciones dependen de la ubicación.</p>
+        </details>
+        <details>
+          <summary>¿Puedo cambiar la distribución?</summary>
+          <p>Sí. Las modificaciones deben revisarse con un asesor y pueden cambiar el precio y el plazo.</p>
+        </details>
+        <details>
+          <summary>¿Cómo funciona el alquiler?</summary>
+          <p>La mensualidad es referencial y está sujeta a plazo, garantía, ubicación, disponibilidad y evaluación comercial.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <img src="assets/images/logo-delanova.jpeg" alt="DELANOVA" />
+      <div>
+        <strong>Casas prefabricadas DELANOVA</strong>
+        <p>Venta y alquiler directo con asesoría personalizada.</p>
+      </div>
+      <small>Precios, medidas, acabados e imágenes referenciales. Sujetos a evaluación y cotización final.</small>
+    </footer>
+
+    <a class="floating-whatsapp js-whatsapp" href="#" data-intent="asesoria" aria-label="Hablar por WhatsApp">
+      <span>WhatsApp</span>
+      <strong>Hablar con un asesor</strong>
+    </a>
+
+    <div class="mobile-buybar">
+      <div>
+        <small id="mobilePriceLabel">Precio web</small>
+        <strong id="mobilePrice">S/ 24,900</strong>
+      </div>
+      <a class="js-whatsapp" href="#" data-intent="producto">Comprar</a>
+    </div>
+
+    <div id="welcomeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+      <div class="modal__backdrop" data-close-modal></div>
+      <div class="modal__card">
+        <button class="modal__close" data-close-modal aria-label="Cerrar promoción">×</button>
+        <span class="modal__badge">OFERTA DE BIENVENIDA</span>
+        <p class="modal__eyebrow">Precio especial por tiempo limitado</p>
+        <h2 id="modalTitle">Cotiza hoy tu casa prefabricada</h2>
+        <p>Elige uno de nuestros tres modelos y conversa directamente con un asesor.</p>
+        <div class="modal__timer">
+          <span>Tu oferta termina en</span>
+          <strong id="modalTimer" class="timer">10:00:00</strong>
+        </div>
+        <a class="primary-cta js-whatsapp" href="#" data-intent="promocion">Quiero mi precio especial</a>
+        <button class="modal__secondary" data-close-modal>Ver los modelos primero</button>
+        <small>Descuento sujeto a vigencia, disponibilidad y cotización comercial.</small>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="app.js"></script>
+  </body>
+</html>
