@@ -6,6 +6,15 @@ const ADVISOR_WHATSAPP = "";
 const OFFER_DURATION_MS = 10 * 60 * 60 * 1000;
 const OFFER_STORAGE_KEY = "delanova_prefab_offer_deadline_v1";
 const VISITOR_STORAGE_KEY = "delanova_prefab_visitor_v1";
+const configurationLimits = {
+  bedrooms: { min: 1, max: 5 },
+  bathrooms: { min: 1, max: 3 },
+  floors: { min: 1, max: 3 },
+};
+const configurationPricing = {
+  compra: { bedrooms: 4800, bathrooms: 4000, floors: 15000 },
+  alquiler: { bedrooms: 170, bathrooms: 140, floors: 480 },
+};
 
 const products = {
   esencial: {
@@ -16,8 +25,8 @@ const products = {
     regularPrice: 27900,
     rentPrice: 1190,
     discount: 11,
-    specs: ["36 m²", "2", "1"],
-    specLabels: ["Área", "Dormitorios", "Baño"],
+    area: "36 m²",
+    baseConfig: { bedrooms: 2, bathrooms: 1, floors: 1 },
     images: [
       { src: "assets/images/esencial-exterior.jpg", alt: "Exterior referencial de la casa Esencial" },
       { src: "assets/images/esencial-interior.jpg", alt: "Interior referencial de la casa Esencial" },
@@ -27,7 +36,7 @@ const products = {
       "Revestimiento exterior en panel de fibrocemento referencial.",
       "Cubierta metálica y acceso frontal protegido.",
       "Sala-comedor con kitchenette compacta.",
-      "Dos dormitorios y un baño en distribución referencial.",
+      "Distribución base de dos habitaciones y un baño, personalizable.",
       "Instalaciones eléctricas y sanitarias sujetas a alcance final.",
     ],
   },
@@ -39,8 +48,8 @@ const products = {
     regularPrice: 39900,
     rentPrice: 1690,
     discount: 13,
-    specs: ["54 m²", "2", "1"],
-    specLabels: ["Área", "Dormitorios", "Baño"],
+    area: "54 m²",
+    baseConfig: { bedrooms: 2, bathrooms: 1, floors: 1 },
     images: [
       { src: "assets/images/confort-exterior.jpg", alt: "Exterior referencial de la casa Confort" },
       { src: "assets/images/confort-interior.jpg", alt: "Interior referencial de la casa Confort" },
@@ -50,7 +59,7 @@ const products = {
       "Fachada con paneles claros y acentos tipo madera.",
       "Ventanas de mayor formato y terraza cubierta.",
       "Cocina integrada con mobiliario base referencial.",
-      "Dos dormitorios, un baño y zona social ampliada.",
+      "Distribución base de dos habitaciones y un baño, personalizable.",
       "Acabados y equipamiento sujetos a la ficha comercial definitiva.",
     ],
   },
@@ -62,8 +71,8 @@ const products = {
     regularPrice: 51900,
     rentPrice: 2290,
     discount: 13,
-    specs: ["72 m²", "3", "2"],
-    specLabels: ["Área", "Dormitorios", "Baños"],
+    area: "72 m²",
+    baseConfig: { bedrooms: 3, bathrooms: 2, floors: 2 },
     images: [
       { src: "assets/images/premium-exterior.jpg", alt: "Exterior referencial de la casa Premium" },
       { src: "assets/images/premium-interior.jpg", alt: "Interior referencial de la casa Premium" },
@@ -73,13 +82,19 @@ const products = {
       "Fachada con paneles premium, acentos tipo madera y detalles metálicos.",
       "Ventanas amplias, terraza y balcón cubierto referenciales.",
       "Cocina integrada y zona social de mayor formato.",
-      "Tres dormitorios y dos baños en distribución referencial.",
+      "Distribución base de tres habitaciones, dos baños y dos pisos, personalizable.",
       "Personalizaciones, cimentación y equipamiento se cotizan por separado.",
     ],
   },
 };
 
-const state = { model: "esencial", mode: "compra", imageIndex: 0, offerExpired: false };
+const state = {
+  model: "esencial",
+  mode: "compra",
+  imageIndex: 0,
+  offerExpired: false,
+  config: { ...products.esencial.baseConfig },
+};
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const money = (value) => new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN", maximumFractionDigits: 0 }).format(value);
@@ -123,10 +138,19 @@ function updateTimer(deadline) {
 
 function selectedProduct() { return products[state.model]; }
 
+function configurationAdjustment(mode = state.mode) {
+  const product = selectedProduct();
+  const rates = configurationPricing[mode];
+  return Object.keys(product.baseConfig).reduce((total, key) => (
+    total + (state.config[key] - product.baseConfig[key]) * rates[key]
+  ), 0);
+}
+
 function selectedPrice() {
   const product = selectedProduct();
-  if (state.mode === "alquiler") return product.rentPrice;
-  return state.offerExpired ? product.regularPrice : product.salePrice;
+  if (state.mode === "alquiler") return Math.max(500, product.rentPrice + configurationAdjustment("alquiler"));
+  const basePrice = state.offerExpired ? product.regularPrice : product.salePrice;
+  return Math.max(15000, basePrice + configurationAdjustment("compra"));
 }
 
 function renderGallery() {
@@ -142,28 +166,47 @@ function renderGallery() {
 
 function renderProduct() {
   const product = selectedProduct();
+  const configuredRegularPrice = product.regularPrice + configurationAdjustment("compra");
+  const configuredSalePrice = product.salePrice + configurationAdjustment("compra");
+  const configuredDiscount = Math.max(0, Math.round((1 - configuredSalePrice / configuredRegularPrice) * 100));
   $("#productTag").textContent = product.tag;
   $("#productName").textContent = product.name;
   $("#productSummary").textContent = product.summary;
-  $("#discountBadge").textContent = state.offerExpired ? "Oferta finalizada" : `-${product.discount}%`;
+  $("#discountBadge").textContent = state.offerExpired ? "Oferta finalizada" : `-${configuredDiscount}%`;
   $("#inlineDiscount").textContent = state.offerExpired
     ? "Precio regular vigente"
-    : `Ahorras ${money(product.regularPrice - product.salePrice)}`;
+    : `Ahorras ${money(configuredRegularPrice - configuredSalePrice)}`;
 
   const isRent = state.mode === "alquiler";
   $("#priceLabel").textContent = isRent ? "Alquiler mensual referencial" : state.offerExpired ? "Precio regular referencial" : "Precio web referencial";
   $("#currentPrice").textContent = `${money(selectedPrice())}${isRent ? "/mes" : ""}`;
   $("#regularPrice").hidden = isRent || state.offerExpired;
-  $("#regularPrice").textContent = money(product.regularPrice);
+  $("#regularPrice").textContent = money(configuredRegularPrice);
   $("#inlineDiscount").hidden = isRent;
   $("#priceNote").textContent = isRent
-    ? "Mensualidad sujeta a plazo, garantía, ubicación, disponibilidad y evaluación comercial."
-    : "Incluye estructura base; traslado e instalación se cotizan según ubicación.";
+    ? "Mensualidad estimada según tu distribución; sujeta a plazo, garantía, ubicación y evaluación comercial."
+    : "Estimación según tu distribución; traslado e instalación se cotizan según ubicación.";
   $("#mainCta").textContent = isRent ? "Consultar alquiler por WhatsApp" : "Cotizar esta casa por WhatsApp";
 
-  $("#quickSpecs").innerHTML = product.specs.map((spec, index) => (
-    `<span><strong>${spec}</strong>${product.specLabels[index]}</span>`
-  )).join("");
+  $("#quickSpecs").innerHTML = [
+    `<span><strong>${product.area}</strong>Área base</span>`,
+    `<span><strong>${state.config.bedrooms}</strong>${state.config.bedrooms === 1 ? "Habitación" : "Habitaciones"}</span>`,
+    `<span><strong>${state.config.bathrooms}</strong>${state.config.bathrooms === 1 ? "Baño" : "Baños"}</span>`,
+    `<span><strong>${state.config.floors}</strong>${state.config.floors === 1 ? "Piso" : "Pisos"}</span>`,
+  ].join("");
+  $("#bedroomsValue").value = state.config.bedrooms;
+  $("#bedroomsValue").textContent = state.config.bedrooms;
+  $("#bathroomsValue").value = state.config.bathrooms;
+  $("#bathroomsValue").textContent = state.config.bathrooms;
+  $("#floorsValue").value = state.config.floors;
+  $("#floorsValue").textContent = state.config.floors;
+  $$("[data-config]").forEach((button) => {
+    const key = button.dataset.config;
+    const step = Number(button.dataset.step);
+    button.disabled = step < 0
+      ? state.config[key] <= configurationLimits[key].min
+      : state.config[key] >= configurationLimits[key].max;
+  });
   $("#detailList").innerHTML = product.details.map((detail) => `<li>${detail}</li>`).join("");
 
   $("#mobilePriceLabel").textContent = isRent ? "Alquiler mensual" : state.offerExpired ? "Precio regular" : "Precio web";
@@ -176,6 +219,7 @@ function setModel(model) {
   if (!products[model]) return;
   state.model = model;
   state.imageIndex = 0;
+  state.config = { ...products[model].baseConfig };
   $$(".model-tab").forEach((button) => {
     const active = button.dataset.model === model;
     button.classList.toggle("is-active", active);
@@ -196,6 +240,13 @@ function shiftImage(step) {
   renderGallery();
 }
 
+function changeConfiguration(key, step) {
+  if (!configurationLimits[key]) return;
+  const limits = configurationLimits[key];
+  state.config[key] = Math.min(limits.max, Math.max(limits.min, state.config[key] + step));
+  renderProduct();
+}
+
 function buildMessage(intent) {
   const product = selectedProduct();
   const modeLabel = state.mode === "alquiler" ? "alquiler" : "compra";
@@ -212,7 +263,8 @@ function buildMessage(intent) {
     `Modelo seleccionado: ${product.name}`,
     `Modalidad: ${modeLabel}`,
     `Precio mostrado: ${priceLabel} (referencial)`,
-    `Área referencial: ${product.specs[0]}`,
+    `Área base referencial: ${product.area}`,
+    `Distribución elegida: ${state.config.bedrooms} habitaciones, ${state.config.bathrooms} baños y ${state.config.floors} pisos`,
     offerStatus,
     "",
     "Por favor, deseo confirmar acabados, transporte, instalación, condiciones y precio final.",
@@ -249,6 +301,9 @@ function init() {
 
   $$(".model-tab").forEach((button) => button.addEventListener("click", () => setModel(button.dataset.model)));
   $$(".mode-button").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
+  $$("[data-config]").forEach((button) => button.addEventListener("click", () => {
+    changeConfiguration(button.dataset.config, Number(button.dataset.step));
+  }));
   $("#galleryPrev").addEventListener("click", () => shiftImage(-1));
   $("#galleryNext").addEventListener("click", () => shiftImage(1));
   $("#galleryDots").addEventListener("click", (event) => {

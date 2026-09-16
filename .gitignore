@@ -3,3 +3,6 @@ Thumbs.db
 .vercel
 node_modules
 *.log
+
+# Contexto interno para continuidad; no publicar en GitHub.
+CONTEXTO_PROYECTO.md

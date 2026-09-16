@@ -7,11 +7,13 @@ Landing mobile-first de venta directa para las casas prefabricadas de DELANOVA. 
 - Selector de tres modelos: Esencial, Confort y Premium.
 - Carrusel táctil con vista exterior e interior de cada modelo.
 - Modalidades de compra y alquiler con precios referenciales.
+- Configurador de habitaciones, baños y pisos con actualización inmediata de la estimación.
 - Descuento visible y contador de 10 horas persistente por navegador mediante `localStorage`.
 - Detalles técnicos desplegables.
 - Ventana promocional al iniciar, cerrable por el usuario.
 - CTA fijo en móvil y acceso flotante a WhatsApp en escritorio.
 - Mensaje de WhatsApp personalizado con modelo, modalidad, precio y estado de la promoción.
+- El mensaje de WhatsApp incluye la distribución configurada por el visitante.
 - Diseño responsive priorizado para celulares.
 
 ## Ejecutar localmente

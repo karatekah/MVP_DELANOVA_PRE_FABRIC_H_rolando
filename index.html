@@ -124,9 +124,46 @@
 
             <div class="quick-specs" id="quickSpecs">
               <span><strong>36 m²</strong> Área</span>
-              <span><strong>2</strong> Dormitorios</span>
+              <span><strong>2</strong> Habitaciones</span>
               <span><strong>1</strong> Baño</span>
+              <span><strong>1</strong> Piso</span>
             </div>
+
+            <section class="configurator" aria-labelledby="configuratorTitle">
+              <div class="configurator__heading">
+                <div>
+                  <span>Personaliza tu distribución</span>
+                  <h3 id="configuratorTitle">¿Cómo necesitas tu casa?</h3>
+                </div>
+                <small>La estimación cambia con tu selección.</small>
+              </div>
+              <div class="configurator__grid">
+                <div class="counter-control">
+                  <span>Habitaciones</span>
+                  <div>
+                    <button type="button" data-config="bedrooms" data-step="-1" aria-label="Quitar una habitación">−</button>
+                    <output id="bedroomsValue" aria-live="polite">2</output>
+                    <button type="button" data-config="bedrooms" data-step="1" aria-label="Añadir una habitación">+</button>
+                  </div>
+                </div>
+                <div class="counter-control">
+                  <span>Baños</span>
+                  <div>
+                    <button type="button" data-config="bathrooms" data-step="-1" aria-label="Quitar un baño">−</button>
+                    <output id="bathroomsValue" aria-live="polite">1</output>
+                    <button type="button" data-config="bathrooms" data-step="1" aria-label="Añadir un baño">+</button>
+                  </div>
+                </div>
+                <div class="counter-control">
+                  <span>Pisos</span>
+                  <div>
+                    <button type="button" data-config="floors" data-step="-1" aria-label="Quitar un piso">−</button>
+                    <output id="floorsValue" aria-live="polite">1</output>
+                    <button type="button" data-config="floors" data-step="1" aria-label="Añadir un piso">+</button>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <a id="mainCta" class="primary-cta js-whatsapp" href="#" data-intent="producto">
               Cotizar esta casa por WhatsApp
